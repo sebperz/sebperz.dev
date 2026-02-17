@@ -139,31 +139,32 @@ function markdownToHtml(markdown) {
     return html;
 }
 
-// Fetch content index
+// Fetch content manifest and load all content
 async function loadContentIndex() {
     console.log('Loading content...');
     try {
-        const response = await fetch('content/index.json');
+        const response = await fetch('content/manifest.json');
         if (!response.ok) {
-            throw new Error(`Failed to fetch index: ${response.status}`);
+            throw new Error(`Failed to fetch manifest: ${response.status}`);
         }
-        const index = await response.json();
-        console.log('Index loaded:', index);
+        const manifest = await response.json();
+        console.log('Manifest loaded:', manifest);
         
         // Load all projects
-        for (const project of index.projects) {
-            console.log('Loading project:', project.file);
+        for (const project of manifest.projects) {
+            const filePath = `content/projects/${project.filename}`;
+            console.log('Loading project:', filePath);
             try {
-                const response = await fetch(project.file);
+                const response = await fetch(filePath);
                 if (!response.ok) {
-                    throw new Error(`Failed to fetch ${project.file}: ${response.status}`);
+                    throw new Error(`Failed to fetch ${filePath}: ${response.status}`);
                 }
                 const markdown = await response.text();
                 const { data, content } = parseFrontmatter(markdown);
                 const parsed = parseProjectContent(content);
                 
                 state.projects.items.push({
-                    id: project.id,
+                    id: data.id,
                     slug: project.slug,
                     name: data.name,
                     description: data.description,
@@ -171,23 +172,24 @@ async function loadContentIndex() {
                     details: parsed
                 });
             } catch (e) {
-                console.error(`Failed to load project: ${project.file}`, e);
+                console.error(`Failed to load project: ${filePath}`, e);
             }
         }
         
         // Load all blogs
-        for (const blog of index.blogs) {
-            console.log('Loading blog:', blog.file);
+        for (const blog of manifest.blogs) {
+            const filePath = `content/blogs/${blog.filename}`;
+            console.log('Loading blog:', filePath);
             try {
-                const response = await fetch(blog.file);
+                const response = await fetch(filePath);
                 if (!response.ok) {
-                    throw new Error(`Failed to fetch ${blog.file}: ${response.status}`);
+                    throw new Error(`Failed to fetch ${filePath}: ${response.status}`);
                 }
                 const markdown = await response.text();
                 const { data, content } = parseFrontmatter(markdown);
                 
                 state.blogs.items.push({
-                    id: blog.id,
+                    id: data.id,
                     slug: blog.slug,
                     title: data.title,
                     description: data.description,
@@ -195,9 +197,13 @@ async function loadContentIndex() {
                     content: content
                 });
             } catch (e) {
-                console.error(`Failed to load blog: ${blog.file}`, e);
+                console.error(`Failed to load blog: ${filePath}`, e);
             }
         }
+        
+        // Sort by ID descending (highest ID first)
+        state.projects.items.sort((a, b) => b.id - a.id);
+        state.blogs.items.sort((a, b) => b.id - a.id);
         
         state.loading = false;
         console.log('Projects loaded:', state.projects.items.length);
@@ -206,13 +212,10 @@ async function loadContentIndex() {
         renderBlogs();
         
     } catch (e) {
-        console.error('Failed to load content index:', e);
+        console.error('Failed to load content manifest:', e);
         state.loading = false;
         elements.projectsContainer.innerHTML = '<div class="empty-state"><p>Error loading content. Check console for details.</p></div>';
         elements.blogsContainer.innerHTML = '<div class="empty-state"><p>Error loading content. Check console for details.</p></div>';
-        state.loading = false;
-        elements.projectsContainer.innerHTML = '<div class="empty-state"><p>Failed to load content</p></div>';
-        elements.blogsContainer.innerHTML = '<div class="empty-state"><p>Failed to load content</p></div>';
     }
 }
 

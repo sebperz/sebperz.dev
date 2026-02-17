@@ -1,0 +1,42 @@
+{
+  "projects": [
+    {
+      "filename": "bare-metal-raspberry-pi-os.md",
+      "slug": "bare-metal-raspberry-pi-os"
+    },
+    {
+      "filename": "database-engine.md",
+      "slug": "database-engine"
+    },
+    {
+      "filename": "distributed-file-system.md",
+      "slug": "distributed-file-system"
+    },
+    {
+      "filename": "linux-process-scheduler.md",
+      "slug": "linux-process-scheduler"
+    },
+    {
+      "filename": "neural-network.md",
+      "slug": "neural-network"
+    },
+    {
+      "filename": "real-time-ray-tracer.md",
+      "slug": "real-time-ray-tracer"
+    },
+    {
+      "filename": "rust-web-server.md",
+      "slug": "rust-web-server"
+    }
+  ],
+  "blogs": [
+    {
+      "filename": "rust-for-systems-programming.md",
+      "slug": "rust-for-systems-programming"
+    },
+    {
+      "filename": "understanding-virtual-memory.md",
+      "slug": "understanding-virtual-memory"
+    }
+  ]
+}
