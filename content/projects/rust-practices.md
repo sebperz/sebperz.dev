@@ -5,8 +5,8 @@ description: On my way to learn Rust, I'm making little projects like tictactoe,
 tags: [Rust, Learning, Networking]
 ---
 # Rust Practices
-[github repo](https://github.com/sebperz/rust-practices)
-The first step on my way to learn Rust is the Rust Book, but you have to code to really learn, and this is this GitHub repo.
+#### [github repo](https://github.com/sebperz/rust-practices)  
+The first step on my way to learn Rust is the Rust Book, but you have to code to really learn, and this is this GitHub repo.  
 I'm going to create a variety of little programs to get familiar with Rust, and in the way I'm learning alongside my friend [serigu](https://github.com/jsrg26), we embark in this Rust journey in parallel, and build these projects while chatting alongside, this way we can share bugs, knowledge and discoveries while building.
 
 ## What I Learned
